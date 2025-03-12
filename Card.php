@@ -1,6 +1,7 @@
 <?php
 
-class Card {
+class Card
+{
     public string $suit;
     public string $value;
 
