@@ -2,16 +2,34 @@
 
 class Card
 {
-    public string $suit;
-    public string $value;
+    private string $suit;
+    private string $value;
 
-    function __construct($suit, $value)
+    private function validateSuit(string $suit)
     {
+        $validSuits = ['schoppen', 'harten', 'ruiten', 'harten', 'klaveren'];
+        if (!in_array($suit, $validSuits)) {
+            throw new InvalidArgumentException('Invalid suit given: ' . $suit);
+        }
+    }
+
+    private function validateValue(string $value)
+    {
+        if (is_numeric($value)) {
+            throw new InvalidArgumentException('Value cannot be a number!');
+        }
+    }
+
+    public function __construct(string $suit, string $value)
+    {
+        $this->validateSuit($suit);
+        $this->validateValue($value);
+
         $this->suit = $suit;
         $this->value = $value;
     }
 
-    function show(): string
+    public function show(): string
     {
         $suits = [
             "schoppen" => "\u{2660}",
@@ -38,4 +56,17 @@ class Card
 
         return $suits[$this->suit] . " " . $values[$this->value] . PHP_EOL;
     }
+}
+
+try {
+    $card1 = new Card('klaveren', 'boer');
+    echo $card1->show();
+    $card2 = new Card('ruiten', 'boer');
+    echo $card2->show();
+    $card3 = new Card('ruiten', 'vijf');
+    echo $card3->show();
+    $card4 = new Card('schoffels', 'zes');
+    echo $card4->show();
+} catch (InvalidArgumentException $error) {
+    echo "InvalidArgumentException: " . $error->getMessage();
 }
