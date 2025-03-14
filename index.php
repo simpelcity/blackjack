@@ -2,11 +2,15 @@
 
 require_once 'Card.php';
 
-$card1 = new Card('klaveren', 'boer');
-$card2 = new Card('ruiten', 'boer');
-$card3 = new Card('ruiten', 'vijf');
-$card4 = new Card('harten', 12);
-echo $card1->show();
-echo $card2->show();
-echo $card3->show();
-echo $card4->show();
+try {
+    $card1 = new Card('klaveren', 'boer');
+    echo $card1->show();
+    $card2 = new Card('ruiten', 'boer');
+    echo $card2->show();
+    $card3 = new Card('ruiten', 'vijf');
+    echo $card3->show();
+    $card4 = new Card('schoffels', 6);
+    echo $card4->show();
+} catch (InvalidArgumentException $error) {
+    echo "InvalidArgumentException: " . $error->getMessage();
+}
