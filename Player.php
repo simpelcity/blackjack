@@ -1,6 +1,7 @@
 <?php
 
-class PLayer{
+class Player
+{
     private string $name;
     private array $hand;
 
