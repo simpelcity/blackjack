@@ -54,6 +54,6 @@ class Card
             'heer'  => 'H'
         ];
 
-        return $suits[$this->suit] . " " . $values[$this->value] . PHP_EOL;
+        return $suits[$this->suit] . " " . $values[$this->value];
     }
 }
