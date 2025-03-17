@@ -56,4 +56,25 @@ class Card
 
         return $suits[$this->suit] . " " . $values[$this->value];
     }
+
+    public function score(): int
+    {
+        $values = [
+            'aas'   => 11,
+            'twee' => 2,
+            'drie' => 3,
+            'vier' => 4,
+            'vijf' => 5,
+            'zes' => 6,
+            'zeven' => 7,
+            'acht' => 8,
+            'negen' => 9,
+            'tien' => 10,
+            'boer'  => 10,
+            'vrouw' => 10,
+            'heer'  => 10
+        ];
+
+        return $values[$this->value];
+    }
 }
