@@ -96,7 +96,7 @@ class Dealer
                     return;
                 }
 
-                $choice = readline($player->name() . "'s turn. " . $player->showHand() . ". " . "'draw' or 'stop'?..." . PHP_EOL);
+                $choice = readline($player->name(), "'s turn. ", $player->showHand(), ". ", "'draw' or 'stop'?..." . PHP_EOL);
 
                 if ($choice === 'd') {
                     $newCard = $this->dealCard($player);

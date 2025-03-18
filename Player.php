@@ -26,12 +26,12 @@ class Player
         return trim($handDesc);
     }
 
-    public function name():string
+    public function name(): string
     {
         return $this->name;
     }
 
-    public function hand():array
+    public function hand(): array
     {
         return $this->hand;
     }
