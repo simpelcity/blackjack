@@ -5,26 +5,8 @@ class Card
     private string $suit;
     private string $value;
 
-    private function validateSuit(string $suit)
-    {
-        $validSuits = ['schoppen', 'harten', 'ruiten', 'harten', 'klaveren'];
-        if (!in_array($suit, $validSuits)) {
-            throw new InvalidArgumentException('Invalid suit given: ' . $suit);
-        }
-    }
-
-    private function validateValue(string $value)
-    {
-        if (is_numeric($value)) {
-            throw new InvalidArgumentException('Value cannot be a number!');
-        }
-    }
-
     public function __construct(string $suit, string $value)
     {
-        $this->validateSuit($suit);
-        $this->validateValue($value);
-
         $this->suit = $suit;
         $this->value = $value;
     }

@@ -4,13 +4,11 @@ class Player
 {
     private string $name;
     private array $hand;
-    private Blackjack $blackjack;
 
-    public function __construct($name, Blackjack $blackjack)
+    public function __construct(string $name)
     {
         $this->name = $name;
         $this->hand = [];
-        $this->blackjack = $blackjack;
     }
 
     public function addCard(Card $card): Card
@@ -28,8 +26,13 @@ class Player
         return trim($handDesc);
     }
 
-    public function getScore(): string
+    public function name():string
     {
-        return $this->blackjack->scoreHand($this->hand);
+        return $this->name;
+    }
+
+    public function hand():array
+    {
+        return $this->hand;
     }
 }

@@ -4,30 +4,20 @@ class Deck
 {
     private array $cards = [];
 
-    public function __construct()
+    public function __construct(array $presetCards = [])
     {
-        $suits = [
-            'schoppen',
-            'harten',
-            'ruiten',
-            'klaveren'
-        ];
+        if (!empty($presetCards)) {
+            $this->cards = $presetCards;
+        } else {
+            $this->initializeDeck();
+        }
+    }
+
+    private function initializeDeck()
+    {
+        $suits = ['schoppen', 'harten', 'ruiten', 'klaveren'];
         
-        $values = [
-            'aas',
-            'twee',
-            'drie',
-            'vier',
-            'vijf',
-            'zes',
-            'zeven',
-            'acht',
-            'negen',
-            'tien',
-            'boer',
-            'vrouw',
-            'heer'
-        ];
+        $values = ['aas', 'twee', 'drie', 'vier', 'vijf', 'zes', 'zeven', 'acht', 'negen', 'tien', 'boer', 'vrouw', 'heer'];
 
         foreach ($suits as $suit) {
             foreach ($values as $value) {
