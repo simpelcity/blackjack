@@ -40,6 +40,7 @@ class Dealer
 
         foreach ($this->players as $player) {
             if ($this->getScore($player) === 'Blackjack') {
+                
                 echo $player->name() . " wins! " . $this->getScore($player) . "!" . PHP_EOL;
                 foreach ($this->players as $player) {
                     echo $player->showHand() . " -> " . $this->getScore($player) . PHP_EOL;
@@ -62,17 +63,18 @@ class Dealer
                 }
 
                 if ($player->name() === 'Dealer') {
-                    if ($this->getScore($player) < 18) {
+                    if ($this->getScore($player) <= 18) {
                         echo $player->showHand() . PHP_EOL;
                         $newCard = $this->dealCard($player);
                         echo "Dealer drew " . $newCard->show() . PHP_EOL;
 
                         if ($this->getScore($player) === 'Busted') {
-                            echo "Dealer is Busted!" . PHP_EOL;
+                            echo "Dealer is Busted!: " . $player->showHand() . PHP_EOL;
                             $activePlayers[$key] = false;
                         }
                     } else {
-                        echo "Dealer stops." . PHP_EOL;
+                        echo $player->showHand() . PHP_EOL;
+                        echo $player->name() . " stops." . PHP_EOL;
                         $activePlayers[$key] = false;
                     }
                     continue;
@@ -80,33 +82,26 @@ class Dealer
 
                 $score = $this->getScore($player);
 
-                if (in_array($score, ['Busted', 'Five Card Charlie'])) {
-                    echo $player->name() . " is " . $score . "!" . PHP_EOL;
+                if (in_array($score, ['Five Card Charlie'])) {
+                    echo $player->name() . " is " . $score . "." . PHP_EOL;
                     $activePlayers[$key] = false;
                     continue;
                 } elseif (in_array($score, ['Twenty-One'])) {
                     echo $player->name() . " is " . $score . PHP_EOL;
-                    $score = 21;
                     $activePlayers[$key] = false;
                     continue;
-                } elseif (in_array($score, ['Blackjack'])) {
-                    echo $player->name() . " wins! " . $score . "!" . PHP_EOL;
-                    $activePlayers[$key] = false;
-                    echo $player->showHand() . " -> " . $score . PHP_EOL;
-                    return;
                 }
 
                 $choice = readline($player->name() . "'s turn. " . $player->showHand() . ". " . "'draw' or 'stop'?..." . PHP_EOL);
 
-                if ($choice === 'd') {
+                if ($choice === 'd' || $choice === 'draw') {
                     $newCard = $this->dealCard($player);
                     echo $player->name() . " drew " . $newCard->show() . PHP_EOL;
-
+                    
                     if ($this->getScore($player) === 'Busted') {
-                        echo $player->name() . " is Busted!" . PHP_EOL;
                         $activePlayers[$key] = false;
                     }
-                } elseif ($choice === 's') {
+                } elseif ($choice === 's' || $choice === 'stop') {
                     echo $player->name() . " stops." . PHP_EOL;
                     $activePlayers[$key] = false;
                 }
@@ -116,35 +111,45 @@ class Dealer
         $dealerScore = $this->getScore($this->players[0]);
 
         if ($dealerScore === 'Busted') {
+            $winners = [];
             $highestScore = 0;
-            $winner = null;
 
             foreach ($this->players as $player) {
                 if ($player->name() !== 'Dealer') {
-                    $playerScore = intval($this->getScore($player));
-
-                    if ($playerScore <= 21 && $playerScore > $highestScore) {
+                    $playerScore = $this->getScore($player);
+                    if ($playerScore == 21 || $playerScore === 'Twenty-One') {
+                        $winners[] = $player->name();
+                        $playerScore = 21;
+                    }
+                    $playerScore = $this->getScore($player);
+                    if ($playerScore > $highestScore && $playerScore !== 'Busted') {
                         $highestScore = $playerScore;
-                        $winner = $player;
+                        $winners[] = $player->name();
                     }
                 }
             }
 
-            if ($winner) {
-                echo $winner->name() . " wins!" . PHP_EOL;
+            if ($winners) {
+                foreach ($winners as $winner) {
+                    echo $winner . " wins!" . PHP_EOL;
+                }
             } else {
                 echo "no winners" . PHP_EOL;
             }
         } else {
             foreach ($this->players as $player) {
                 if ($player->name() !== 'Dealer') {
-                    $playerScore = intval($this->getScore($player));
+                    $playerScore = $this->getScore($player);
+
+                    if ($playerScore == 21 || $playerScore === 'Twenty-One') {
+                        $playerScore = 21;
+                    }
 
                     if ($playerScore  === 'Busted') {
-                        echo $player->name() . " is Busted!" . PHP_EOL;
-                    } elseif ($playerScore > $dealerScore) {
+                        echo $player->name() . " is Busted." . PHP_EOL;
+                    } elseif ($playerScore > $dealerScore && $playerScore <= 21) {
                         echo $player->name() . " wins with " . $playerScore . "!" . PHP_EOL;
-                    } elseif ($playerScore <= $dealerScore) {
+                    } elseif ($dealerScore >= $playerScore || $playerScore === 'Busted') {
                         echo "Dealer wins against " . $player->name() . " with " . $dealerScore . "!" . PHP_EOL;
                     }
                 }
